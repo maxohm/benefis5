@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>images/add.png</file>
+        <file>images/ch.png</file>
+        <file>images/crypt.png</file>
+        <file>images/delete.png</file>
+        <file>images/down.png</file>
+        <file>images/edit.png</file>
+        <file>images/if.png</file>
+        <file>images/mai.png</file>
+        <file>images/print.png</file>
+        <file>images/radio.png</file>
+        <file>images/rt.png</file>
+        <file>images/save.png</file>
+        <file>images/tech.png</file>
+        <file>images/update.png</file>
+        <file>images/write.png</file>
+    </qresource>
+</RCC>
