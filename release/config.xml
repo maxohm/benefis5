@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Файл конфигурации "Бенефис" -->
+<root>
+	<host id="ARM1"	ip="127.0.0.1"	port="2323"/>
+	<host id="ARM2"	ip="127.0.0.1"	port="2323"/>
+</root>
