@@ -1,10 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 //
-#include <QFile>
-#include <QXmlStreamReader>
 #include <QDate>
 #include <QTimer>
+#include <QFile>
+//#include <QTime>
+#include <QXmlStreamReader>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->crtab->resizeColumnsToContents();
 
     //***********************************************************
-    //********************* QTcpSocket client *******************
+    //********************* Q*Socket client *********************
     //***********************************************************
     //
     for (int i=0; i<f.size(); i++) {			// Считываем массив хостов из XML
@@ -70,14 +71,19 @@ MainWindow::MainWindow(QWidget *parent) :
                 if (t!="host") continue;
 
                 QXmlStreamAttributes xattr = xmlreader.attributes();
-                host[j]=xattr.value("port").toString()+":"+xattr.value("ip").toString()+":"+xattr.value("id").toString();
+                host[j]=xattr.value("id").toString()+":"+xattr.value("ip").toString()+":"+xattr.value("port").toString();
                 log("MainWindow::MainWindow() found "+t+" record "+host[j]);
 
                 //bool ok;
-                h = new QStringList(host[j].split(":"));
-                socket[j] = new QTcpSocket(this);
-                //socket[j]->setPeerName(h[0]);
-                socket[j]->connectToHost(h->at(1),h->at(0).toInt());
+                h = new QStringList(
+                            host[j].split(":")
+                            );
+#ifndef HAVE_QT5
+                socket[j] = new Q3Socket(this,h->at(0));
+#else
+				socket[j] = new QTcpSocket(this);
+#endif
+                socket[j]->connectToHost(h->at(1),h->at(2).toInt());
                 //qDebug()<<"h[1] = "<<h[1]<<" h[0].toUShort(&ok,16) = "<<h[0];
                 connect(socket[j], SIGNAL(connected()), SLOT(slotConnected()));
                 connect(socket[j], SIGNAL(readyRead()), SLOT(readyRead()));
@@ -112,9 +118,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     statusBar()->showMessage("Готов", 0);
     //
+    this->chdialog = new chDialog();
     this->crdialog = new crDialog();
     this->rtdialog = new rtDialog();
-    this->chdialog = new chDialog();
     this->radialog = new raDialog();
 }
 
@@ -123,9 +129,16 @@ void MainWindow::slotReconnect()
     for(int i=0; i<socket.size(); i++)
     {
         //qDebug("---------------- state = %d",socket[i]->state());
-        if(socket[i]->state()!= QTcpSocket::ConnectedState)
+#ifndef HAVE_QT5
+        if(socket[i]->state()!= Q3Socket::Connected)
+#else
+		if(socket[i]->state()!= QTcpSocket::ConnectedState)
+#endif
         {
-            socket[i]->connectToHost(h->at(1),h->at(0).toInt());
+            socket[i]->connectToHost(
+			h->at(1),
+			h->at(0).toInt()
+			);
         }
     }
 }
@@ -143,7 +156,14 @@ void MainWindow::slotConnected()
         out<<quint16(0)<<s;
         out.device()->seek(0);
         out<<quint16(a.size() - sizeof(quint16(0)));
-        socket[j]->write(a.data());
+#ifndef HAVE_QT5
+        socket[j]->writeBlock(
+#else
+		socket[j]->write(
+#endif
+			a.data(),
+			a.size()
+		);
     }
 
     //    qDebug()<<"============= connected 1394";
@@ -445,10 +465,10 @@ void MainWindow::getrow(int i)
 {
     log("MainWindow::getrow("+QString::number(i)+")");
     //
-    QString v = "";
-    //
-    int cn;
     //int cr;
+    int cn;
+    QString v = "";
+
     switch(i)
     {
     case 1:
@@ -696,6 +716,13 @@ void MainWindow::readyRead()
         out<<quint16(0)<<s;
         out.device()->seek(0);
         out<<quint16(a.size() - sizeof(quint16(0)));
-        socket[j]->write(a.data(),a.size());
+#ifndef HAVE_QT5
+        socket[j]->writeBlock(
+#else
+		socket[j]->write(
+#endif
+			a.data(),
+			a.size()
+		);
     };
 }

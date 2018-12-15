@@ -1,18 +1,25 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 //
-#include "disrep.h"
+//#include "disrep.h"
+#include <QMainWindow>
+#include <QTableWidget>
 //
 #include "chdialog.h"
 #include "crdialog.h"
 #include "radialog.h"
 #include "rtdialog.h"
 //
-#include <QMainWindow>
-#include <QTableWidget>
-#include <QTcpSocket>
+#ifndef HAVE_QT5
+#include <Q3Socket>
+static const QStringList sstate  = QStringList() << "Q3Socket::Idle" << "Q3Socket::HostLookup" << "Q3Socket::Connecting" << "Q3Socket::Connected" << "Q3Socket::Closing";
+#endif
 
+#ifdef HAVE_QT5
+#include <QTcpSocket>
 static const QStringList sstate  = QStringList() << "QAbstractSocket::UnconnectedState" << "QAbstractSocket::HostLookupState" << "QAbstractSocket::ConnectingState" << "QAbstractSocket::ConnectedState" << "QAbstractSocket::BoundState" << "QAbstractSocket::ClosingState" << "QAbstractSocket::ListeningState";
+#endif
+//
 static const QStringList f  = QStringList() << "config.xml";
 static const QStringList ferr  = QStringList() << "QFile::NoError" << "QFile::ReadError" << "QFile::WriteError" << "QFile::FatalError" << "QFile::ResourceError" << "QFile::OpenError" << "QFile::AbortError" << "QFile::TimeOutError" << "QFile::UnspecifiedError" << "QFile::RemoveError" << "QFile::RenameError" << "QFile::PositionError" << "QFile::ResizeError" << "QFile::PermissionsError" << "QFile::CopyError";
 static const QStringList xmlerr  = QStringList() << "QXmlStreamReader::NoError" << "QXmlStreamReader::CustomError" << "QXmlStreamReader::NotWellFormedError" << "QXmlStreamReader::PrematureEndOfDocumentError" << "QXmlStreamReader::UnexpectedElementError";
@@ -29,7 +36,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     //
-    disrep* dis;
+    //disrep* dis;
 
 private slots:
     void saveTbl(QTableWidget *tbl);
@@ -65,8 +72,15 @@ private:
     raDialog* radialog;
     rtDialog* rtdialog;
     //
+#ifdef HAVE_QT5
     QMap<int, QString> host;		// Массив параметров хостов для обмена
     QMap<int, QTcpSocket*> socket;  // Массив сокетов
+#endif
+
+#ifndef HAVE_QT5
+    QMap<int, QString> host;		// Массив параметров хостов для обмена
+    QMap<int, Q3Socket*> socket;    // Массив сокетов
+#endif
  };
 
 #endif // MAINWINDOW_H

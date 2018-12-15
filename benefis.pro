@@ -1,13 +1,8 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2013-08-06T12:58:11
-#
-#-------------------------------------------------
-
-greaterThan(QT_MAJOR_VERSION, 4)
-{
+greaterThan(QT_MAJOR_VERSION, 4) {
 QT += widgets network
 DEFINES += HAVE_QT5
+} else {
+QT += core gui network qt3support xml
 }
 
 #include(../../arms/superarm.pri)
@@ -22,7 +17,7 @@ SOURCES += main.cpp\
     crdialog.cpp \
     radialog.cpp \
     rtdialog.cpp \
-    disrep.cpp
+#   disrep.cpp
 
 HEADERS  += mainwindow.h \
     chdialog.h \
@@ -30,7 +25,7 @@ HEADERS  += mainwindow.h \
     radialog.h \
     rtdialog.h \
     version.rc \
-    disrep.h
+#   disrep.h
 
 FORMS    += mainwindow.ui \
     chdialog.ui \
@@ -41,6 +36,6 @@ FORMS    += mainwindow.ui \
 RESOURCES += images.qrc
 win32:RC_FILE += version.rc
 
-#INCLUDEPATH += ../../include/
-#INCLUDEPATH += ../../icore/
+INCLUDEPATH += ../../include/
+INCLUDEPATH += ../../icore/
 
