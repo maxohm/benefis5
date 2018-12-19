@@ -20,12 +20,12 @@
             BEGIN
                 VALUE   "CompanyName",      "\0"
                 VALUE   "FileDescription",  "Root Version Info\0"
-                VALUE   "FileVersion",      "2016.08.08\0"
+                VALUE   "FileVersion",      "2018.12.18\0"
                 VALUE   "InternalName",     "BENEFIS\0"
-                VALUE   "LegalCopyright",   "2016, Krasnodar, M N Ershov\0"
+                VALUE   "LegalCopyright",   "2018, Krasnodar, M N Ershov\0"
                 VALUE   "OriginalFilename", "BENEFIS.EXE\0"
                 VALUE   "ProductName",      "BENEFIS5\0"
-                VALUE   "ProductVersion",   "2016.08\0"
+                VALUE   "ProductVersion",   "2018.12\0"
             END
         END
     END

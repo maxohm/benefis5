@@ -36,6 +36,6 @@ FORMS    += mainwindow.ui \
 RESOURCES += images.qrc
 win32:RC_FILE += version.rc
 
-INCLUDEPATH += ../../include/
-INCLUDEPATH += ../../icore/
+#INCLUDEPATH += ../../include/
+#INCLUDEPATH += ../../icore/
 
