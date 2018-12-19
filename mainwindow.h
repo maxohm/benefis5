@@ -73,13 +73,11 @@ private:
     rtDialog* rtdialog;
     //
 #ifdef HAVE_QT5
-    QMap<int, QString> host;		// Массив параметров хостов для обмена
-    QMap<int, QTcpSocket*> socket;  // Массив сокетов
-#endif
-
-#ifndef HAVE_QT5
-    QMap<int, QString> host;		// Массив параметров хостов для обмена
-    QMap<int, Q3Socket*> socket;    // Массив сокетов
+    QList<QString> host;		// Массив параметров хостов для обмена
+    QList<QTcpSocket*> socket;  // Массив сокетов
+#else
+    QList<QString> host;		// Массив параметров хостов для обмена
+    QList<Q3Socket*> socket;    // Массив сокетов
 #endif
  };
 
